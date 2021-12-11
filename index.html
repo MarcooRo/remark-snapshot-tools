@@ -1,0 +1,66 @@
+<html>
+    <head>
+    </head>
+        <style>
+            body {
+                font-family: roboto;
+                background-color: #16161D;
+            }
+            h1 {
+                color: #ffffff; 
+                font-family: 'Raleway',sans-serif; 
+                font-size: 62px; 
+                font-weight: 800; 
+                line-height: 72px; 
+                margin: 0 0 48px; 
+                text-align: center; 
+                text-transform: uppercase;
+            }
+            .central{
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                -webkit-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+                max-width:500px 
+            }
+            form{
+                width: 100%;
+                margin: 0 0 48px;
+            } 
+            .nftId{
+                width: 75%;
+                height: 40px;
+                padding: 0.25rem 0.5rem;
+            }
+            .snap{
+                width: 20%;
+                height: 40px;
+                cursor: pointer;
+            }
+            p{
+                color: #f8f8f8; 
+                font-family: 'arial',sans-serif; 
+                font-size: 18px; 
+                font-weight: 500; 
+                line-height: 32px; 
+            }
+        </style>
+    <body>
+        <div class='central'>
+            <h1>Make your Snapshop</h1>
+            <form method="POST" class="nft-form">
+                <input class="nftId" type="text" name="nftId" id="nftId" placeholder='key'>      
+                <button class="snap"type="submit">Snap!</button>
+            </form>
+            <p>
+                This tool uses the latest singular dump to get these data:<br> 
+                <i>ID-NFT, address, first sale price, block, timestamp</i>
+            </p>
+            <p>
+                To use it add your key like the Collection ID:<br>
+                <i>e.g: 0a8ce195286c168f19-DONKEY</i>
+            </p>
+        </div>
+    </body>
+</html>
