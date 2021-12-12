@@ -6,6 +6,9 @@
                 font-family: roboto;
                 background-color: #16161D;
             }
+            h2 {
+                color: #f8f8f8; 
+            }
             h1 {
                 color: #ffffff; 
                 font-family: 'Raleway',sans-serif; 
@@ -45,14 +48,20 @@
                 font-weight: 500; 
                 line-height: 32px; 
             }
+            #waitDiv {
+                display: none;
+            }
         </style>
     <body>
         <div class='central'>
             <h1>Make your Snapshop</h1>
             <form method="POST" class="nft-form">
                 <input class="nftId" type="text" name="nftId" id="nftId" placeholder='key'>      
-                <button class="snap"type="submit">Snap!</button>
+                <button onclick="waitDiv()" class="snap"type="submit">Snap!</button>
             </form>
+            <div id="waitDiv">
+                <h2>Processing....</h2>
+            </div>
             <p>
                 This tool uses the latest singular dump to get these data:<br> 
                 <i>ID-NFT, address, first sale price, block, timestamp</i>
@@ -62,5 +71,10 @@
                 <i>e.g: 0a8ce195286c168f19-DONKEY</i>
             </p>
         </div>
+        <script>
+            function waitDiv() {
+              document.getElementById("waitDiv").style.display = "block";
+            }
+            </script>
     </body>
 </html>

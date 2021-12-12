@@ -1,42 +1,52 @@
-const jsonObj = require('./data.json');
 const http = require('http');
 const fs = require('fs');
+var axios = require('axios');
 const url = require('url');
 const util = require('util');
 const alasql = require('alasql');
 const querystring = require('querystring');
 const { exec } = require('child_process');
 const port = 3000;
+const  { ApiPromise } = require('@polkadot/api');
+const WsProvider = require('@polkadot/api')
+const hexToString = require('@polkadot/util')
 
+function requestDb(req, body,res) {
 
-const server = http.createServer(function(req, res) {
-    let body = "";
-    req.on('data', chunk => {
-        body += chunk.toString();
-    });
-    
-
-    if(req.method.toLocaleLowerCase() == 'post') {
-        //exec("curl https://gateway.pinata.cloud/ipns/precon-lite.rmrk.link > data.json")
-        req.on('end', () => {
-        body = querystring.parse(body);
-        let userInput = body.nftId;
+    axios.get('https://gateway.pinata.cloud/ipns/precon-lite.rmrk.link')
+    .then(async response => {
+     let jsonObj = JSON.parse(JSON.stringify(response.data));
+     let userInput = body.nftId;
         if(typeof userInput != undefined && userInput != ""){
-        saveFile(userInput);
+        await saveFile(userInput, jsonObj);
         var query = url.parse(req.url, true).query;
-            //read the image using fs and send the image content back in the response
             fs.readFile(`./excellDocuments/Remark-snapshot-wallet_${userInput}.xlsx`, function (err, content) {
                 if (err) {
                     res.writeHead(400, {'Content-type':'text/html'})
                     console.log(err);
                     res.end("No such file");    
                 } else {
-                    //specify Content will be an attachment
                     res.setHeader('Content-disposition', 'attachment; filename='+`Remark-snapshot-wallet_${userInput}.xlsx`);
                     res.end(content);
                 }
             });
         }
+     
+    })
+    .catch(err => {
+        console.log(err)
+    });
+}
+
+const server = http.createServer(function(req, res) {
+    let body = "";
+    req.on('data', chunk => {
+        body += chunk.toString();
+    });
+    if(req.method.toLocaleLowerCase() == 'post') {
+        req.on('end', () => {
+        body = querystring.parse(body);
+        requestDb(req, body, res)
     });
     }else{
         res.writeHead(200, {'ContentType': 'text/html'})
@@ -60,22 +70,25 @@ server.listen(port, function(error) {
 })
 
 
-function saveFile (collectionId) {
+async function saveFile (collectionId, jsonObj) {
+    const provider = new WsProvider.WsProvider('wss://kusama-rpc.polkadot.io/');
+    const api = await ApiPromise.create({ provider });
     var sheet_1_data = [{NFT_ID:0, OWNER_ID:0, PRICE:0, BLOCK:0}];
     for(var i in jsonObj.nfts) {
-        //console.log(i)
-        //console.log(collectionId)
         if(i.includes(collectionId)){
-            //console.log(jsonObj.nfts[`${i}`].changes['0'].new);
             var price = jsonObj.nfts[`${i}`].changes['0'].new;
-            if(isNaN(price)){
-                price = 0;
-            }
+            price = (price / 100000000000) / 0.95;
+            if(isNaN(price))price = 0;
             var block = jsonObj.nfts[`${i}`].changes['0'].block;
-            sheet_1_data.push({NFT_ID:i, OWNER_ID:jsonObj.nfts[`${i}`].owner, PRICE:price, BLOCK:block});
+            const blockHash = await api.rpc.chain.getBlockHash(block);
+            const signedBlock = await api.rpc.chain.getBlock(blockHash);
+            var date = signedBlock.block.extrinsics[0].args[0];
+            var d = new Date(0); // The 0 there is the key, which sets the date to the epoch
+            d.setUTCSeconds(date);
+            sheet_1_data.push({NFT_ID:i, OWNER_ID:jsonObj.nfts[`${i}`].owner, PRICE:price, BLOCK:block, DATE:d});
         }
     }
-    var opts = [{sheetid:'NFT_ID',header:true},{sheetid:'OWNER_ID',header:false},{sheetid:'PRICE',header:false},{sheetid:'BLOCK',header:false}];
+    var opts = [{sheetid:'NFT_ID',header:true},{sheetid:'OWNER_ID',header:false},{sheetid:'PRICE',header:false},{sheetid:'BLOCK',header:false}, {sheetid:'DATA', header:false}];
     var result = alasql(`SELECT * INTO XLSX("./excellDocuments/Remark-snapshot-wallet_${collectionId}.xlsx",?) FROM ?`, [opts,[sheet_1_data]]);
     exec("rm -rf ./excellDocuments/*.xlsx");
 }
