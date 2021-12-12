@@ -77,7 +77,10 @@ async function saveFile (collectionId, jsonObj) {
     for(var i in jsonObj.nfts) {
         if(i.includes(collectionId)) {
             var price = jsonObj.nfts[`${i}`].changes['0'].new;
-            price = (price / 100000000000) / 0.95;
+            price = (price/1000000000000)/0.95
+            price = Number(price)
+            price = price.toFixed(2)
+            price = Number(price)
             if(isNaN(price))price = 0;
             var block = jsonObj.nfts[`${i}`].changes['0'].block;
             const blockHash = await api.rpc.chain.getBlockHash(block);
