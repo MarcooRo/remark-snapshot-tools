@@ -36,7 +36,7 @@ We would like to improve this tools, we plan to do these things in the near futu
 If you have any requests, write us!
 
 # Sponsor by
-This project was created and made public thanks to the contribution of Donkey Gang!
+This project was created and made public thanks to the contribution of Donkey Gang!<br>
 <a href='https://singular.rmrk.app/collections/0a8ce195286c168f19-DONKEY' style='width:100%'>
     <img src='img/DonkeyGeg.jpeg' title='Donkey Geg'>
 </a>
