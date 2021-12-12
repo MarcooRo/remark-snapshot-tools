@@ -73,9 +73,9 @@ server.listen(port, function(error) {
 async function saveFile (collectionId, jsonObj) {
     const provider = new WsProvider.WsProvider('wss://kusama-rpc.polkadot.io/');
     const api = await ApiPromise.create({ provider });
-    var sheet_1_data = [{NFT_ID:0, OWNER_ID:0, PRICE:0, BLOCK:0}];
+    var sheet_1_data = [{NFT_ID:0, OWNER_ID:0, PRICE:0, BLOCK:0, DATA:0}];
     for(var i in jsonObj.nfts) {
-        if(i.includes(collectionId)){
+        if(i.includes(collectionId)) {
             var price = jsonObj.nfts[`${i}`].changes['0'].new;
             price = (price / 100000000000) / 0.95;
             if(isNaN(price))price = 0;
@@ -83,12 +83,12 @@ async function saveFile (collectionId, jsonObj) {
             const blockHash = await api.rpc.chain.getBlockHash(block);
             const signedBlock = await api.rpc.chain.getBlock(blockHash);
             var date = signedBlock.block.extrinsics[0].args[0];
-            var d = new Date(0); // The 0 there is the key, which sets the date to the epoch
-            d.setUTCSeconds(date);
-            sheet_1_data.push({NFT_ID:i, OWNER_ID:jsonObj.nfts[`${i}`].owner, PRICE:price, BLOCK:block, DATE:d});
+            console.log(date)
+            var d = new Date(date); // The 0 there is the key, which sets the date to the epoch
+            sheet_1_data.push({NFT_ID:i, OWNER_ID:jsonObj.nfts[`${i}`].owner, PRICE:price, BLOCK:block, DATE:d.toGMTString()});
         }
     }
-    var opts = [{sheetid:'NFT_ID',header:true},{sheetid:'OWNER_ID',header:false},{sheetid:'PRICE',header:false},{sheetid:'BLOCK',header:false}, {sheetid:'DATA', header:false}];
+    var opts = [{sheetid:'NFT_ID',header:true},{sheetid:'OWNER_ID',header:false},{sheetid:'PRICE',header:false},{sheetid:'BLOCK',header:false}, {sheetid:'DATA',header:false}];
     var result = alasql(`SELECT * INTO XLSX("./excellDocuments/Remark-snapshot-wallet_${collectionId}.xlsx",?) FROM ?`, [opts,[sheet_1_data]]);
     exec("rm -rf ./excellDocuments/*.xlsx");
 }
