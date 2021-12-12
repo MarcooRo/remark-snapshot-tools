@@ -82,10 +82,9 @@ async function saveFile (collectionId, jsonObj) {
             var block = jsonObj.nfts[`${i}`].changes['0'].block;
             const blockHash = await api.rpc.chain.getBlockHash(block);
             const signedBlock = await api.rpc.chain.getBlock(blockHash);
-            var date = signedBlock.block.extrinsics[0].args[0];
-            console.log(date)
-            var d = new Date(date); // The 0 there is the key, which sets the date to the epoch
-            sheet_1_data.push({NFT_ID:i, OWNER_ID:jsonObj.nfts[`${i}`].owner, PRICE:price, BLOCK:block, DATE:d.toGMTString()});
+            var date = signedBlock.block.extrinsics[0].args[0].toString();
+            var d = new Date(Math.floor(date)); // The 0 there is the key, which sets the date to the epoch
+            sheet_1_data.push({NFT_ID:i, OWNER_ID:jsonObj.nfts[`${i}`].owner, PRICE:price, BLOCK:block, DATA:d.toLocaleString()});
         }
     }
     var opts = [{sheetid:'NFT_ID',header:true},{sheetid:'OWNER_ID',header:false},{sheetid:'PRICE',header:false},{sheetid:'BLOCK',header:false}, {sheetid:'DATA',header:false}];
