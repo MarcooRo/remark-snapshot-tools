@@ -81,19 +81,20 @@ async function saveFile (collectionId, jsonObj) {
 
                 var opType0 = jsonObj.nfts[`${i}`].changes[`${index}`].opType;
                 console.log('opType0: '+opType0);
+                var opTypeX =jsonObj.nfts[`${i}`].changes[`${index++}`].opType;
 
-                if(jsonObj.nfts[`${i}`].changes[`${index++}`].opType == undefined){
+                if(opTypeX === undefined){
                     var opType1 = 'LIST';
-                    console.log('opType1: '+opType1);
+                    console.log('opType1 f: '+opType1); 
                 } else {
-                    var opType1 = jsonObj.nfts[`${i}`].changes[`${index+1}`].opType;
-                    console.log('opType1: '+opType1);
+                    var opType1 = opTypeX;
+                    console.log('opType1 t: '+opType1);
                 }
 
                 if(opType0 == 'LIST' && opType1 == 'BUY'){
                     var price = jsonObj.nfts[`${i}`].changes[`${index}`].new;
                     var block = jsonObj.nfts[`${i}`].changes[`${index++}`].block;
-                    break;
+                   break;
                 } else {
                     var price = 0;
                     var block = jsonObj.nfts[`${i}`].changes['0'].block; // block genesis
