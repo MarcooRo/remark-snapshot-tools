@@ -76,13 +76,35 @@ async function saveFile (collectionId, jsonObj) {
     var sheet_1_data = [{NFT_ID:0, OWNER_ID:0, PRICE:0, BLOCK:0, DATA:0}];
     for(var i in jsonObj.nfts) {
         if(i.includes(collectionId)) {
-            var price = jsonObj.nfts[`${i}`].changes['0'].new;
+
+            for(var index in jsonObj.nfts[`${i}`].changes){
+
+                var opType0 = jsonObj.nfts[`${i}`].changes[`${index}`].opType;
+                console.log('opType0: '+opType0);
+
+                if(jsonObj.nfts[`${i}`].changes[`${index++}`].opType == undefined){
+                    var opType1 = 'LIST';
+                    console.log('opType1: '+opType1);
+                } else {
+                    var opType1 = jsonObj.nfts[`${i}`].changes[`${index+1}`].opType;
+                    console.log('opType1: '+opType1);
+                }
+
+                if(opType0 == 'LIST' && opType1 == 'BUY'){
+                    var price = jsonObj.nfts[`${i}`].changes[`${index}`].new;
+                    var block = jsonObj.nfts[`${i}`].changes[`${index++}`].block;
+                    break;
+                } else {
+                    var price = 0;
+                    var block = jsonObj.nfts[`${i}`].changes['0'].block; // block genesis
+                }
+            }
+
             price = (price/1000000000000)/0.95
             price = Number(price)
             price = price.toFixed(2)
             price = Number(price)
             if(isNaN(price))price = 0;
-            var block = jsonObj.nfts[`${i}`].changes['0'].block;
             const blockHash = await api.rpc.chain.getBlockHash(block);
             const signedBlock = await api.rpc.chain.getBlock(blockHash);
             var date = signedBlock.block.extrinsics[0].args[0].toString();
