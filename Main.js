@@ -91,7 +91,7 @@ async function saveFile(collectionId, jsonObj) {
                     var index1 = index0
                 } else {
                     var index1 = index0 + 1
-                    if(index1 > len){
+                    if(index1 >= len){
                         var index1 = index0
                     }
                 }
