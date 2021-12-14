@@ -77,7 +77,6 @@ async function saveFile(collectionId, jsonObj) {
     for (var i in jsonObj.nfts) {
         if (i.includes(collectionId)) {
 
-
             for ( var index = 0, len = jsonObj.nfts[`${i}`].changes.length; index < len; index++ ) {
 
                 console.log('-----------------------');
@@ -99,7 +98,6 @@ async function saveFile(collectionId, jsonObj) {
 
                 var opType0 = jsonObj.nfts[`${i}`].changes[index0].opType;
                 console.log('opType0: ' + opType0);
-                //var opTypeX = jsonObj.nfts[`${i}`].changes[index1].opType;
 
                 if (jsonObj.nfts[`${i}`].changes[index1].opType === void 0) {
                     console.log('opType1 undefined');
