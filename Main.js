@@ -85,7 +85,7 @@ async function saveFile(collectionId, jsonObj) {
 
                 var index0 = index;
                 console.log('index0: ' +index0);
-                var index1 = index0 + 1;
+                if(len <= 1){var index1 = index0}else{var index1 = index0 + 1}
                 console.log('index1: ' +index1);
 
                 var opType0 = jsonObj.nfts[`${i}`].changes[index0].opType;
