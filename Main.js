@@ -82,17 +82,26 @@ async function saveFile(collectionId, jsonObj) {
 
                 console.log('-----------------------');
                 console.log(i);
+                console.log('len: ' +len);
 
                 var index0 = index;
                 console.log('index0: ' +index0);
-                if(len <= 1){var index1 = index0}else{var index1 = index0 + 1}
+                
+                if(len <= 1){
+                    var index1 = index0
+                } else {
+                    var index1 = index0 + 1
+                    if(index1 > len){
+                        var index1 = index0
+                    }
+                }
                 console.log('index1: ' +index1);
 
                 var opType0 = jsonObj.nfts[`${i}`].changes[index0].opType;
                 console.log('opType0: ' + opType0);
-                var opTypeX = jsonObj.nfts[`${i}`].changes[index1].opType;
+                //var opTypeX = jsonObj.nfts[`${i}`].changes[index1].opType;
 
-                if (typeof opTypeX === 'undefined') {
+                if (jsonObj.nfts[`${i}`].changes[index1].opType === void 0) {
                     console.log('opType1 undefined');
                 } else {
                     var opType1 = jsonObj.nfts[`${i}`].changes[index1].opType;
