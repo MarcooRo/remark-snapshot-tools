@@ -78,26 +78,31 @@ async function saveFile(collectionId, jsonObj) {
         if (i.includes(collectionId)) {
 
 
-            for (var index in jsonObj.nfts[`${i}`].changes) {
+            for ( var index = 0, len = jsonObj.nfts[`${i}`].changes.length; index < len; index++ ) {
 
                 console.log('-----------------------');
                 console.log(i);
 
-                var opType0 = jsonObj.nfts[`${i}`].changes[`${index}`].opType;
-                console.log('opType0: ' + opType0);
-                var opTypeX = jsonObj.nfts[`${i}`].changes[`${index++}`].opType;
+                var index0 = index;
+                console.log('index0: ' +index0);
+                var index1 = index0 + 1;
+                console.log('index1: ' +index1);
 
-                if (opTypeX) {
-                    var opType1 = jsonObj.nfts[`${i}`].changes[`${index++}`].opType;
-                    console.log('opType1: ' + opType1);
-                } else {
+                var opType0 = jsonObj.nfts[`${i}`].changes[index0].opType;
+                console.log('opType0: ' + opType0);
+                var opTypeX = jsonObj.nfts[`${i}`].changes[index1].opType;
+
+                if (typeof opTypeX === 'undefined') {
                     console.log('opType1 undefined');
+                } else {
+                    var opType1 = jsonObj.nfts[`${i}`].changes[index1].opType;
+                    console.log('opType1: ' + opType1);
                 }
 
                 var price = 0;
                 if (opType0 == 'LIST' && opType1 == 'BUY') {
-                    price = jsonObj.nfts[`${i}`].changes[`${index}`].new;
-                    block = jsonObj.nfts[`${i}`].changes[`${index++}`].block;
+                    price = jsonObj.nfts[`${i}`].changes[index0].new;
+                    block = jsonObj.nfts[`${i}`].changes[index1].block;
                     console.log('price: ' + price);
                     console.log('block: ' + block);
                     break;
