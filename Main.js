@@ -17,7 +17,7 @@ function requestDb(req, body, res) {
         .then(async response => {
             let jsonObj = JSON.parse(JSON.stringify(response.data));
             let userInput = body.nftId;
-            let userInputBlock = body.blockLimit //se passo un blocco funziona 10466699;
+            let userInputBlock = body.blockLimit;
             if (typeof userInput != undefined && userInput != "") {
                 await saveFile(userInputBlock, userInput, jsonObj);
                 var query = url.parse(req.url, true).query;
