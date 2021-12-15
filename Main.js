@@ -40,9 +40,10 @@ function requestDb(req, body, res) {
 }
 
 const server = http.createServer(function(req, res) {
-    let body = "";
+    let body = [];
     req.on('data', chunk => {
         body += chunk.toString();
+        console.log(body);
     });
     if (req.method.toLocaleLowerCase() == 'post') {
         req.on('end', () => {
@@ -121,7 +122,8 @@ async function saveFile(userInputBlock, collectionId, jsonObj) {
                 console.log('-----------------------');
             }
             console.log('userInputBlock: '+userInputBlock);
-            if(userInputBlock >= block){
+
+            if(userInputBlock >= block || userInputBlock == ''){
                 price = (price / 1000000000000) / 0.95
                 price = Number(price)
                 price = price.toFixed(2)
@@ -133,6 +135,7 @@ async function saveFile(userInputBlock, collectionId, jsonObj) {
                 var d = new Date(Math.floor(date)); // The 0 there is the key, which sets the date to the epoch
                 sheet_1_data.push({ NFT_ID: i, OWNER_ID: jsonObj.nfts[`${i}`].owner, PRICE: price, BLOCK: block, DATA: d.toLocaleString() });
             }
+
         }
     }
     var opts = [{ sheetid: 'NFT_ID', header: true }, { sheetid: 'OWNER_ID', header: false }, { sheetid: 'PRICE', header: false }, { sheetid: 'BLOCK', header: false }, { sheetid: 'DATA', header: false }];

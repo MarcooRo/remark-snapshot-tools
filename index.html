@@ -28,11 +28,11 @@
         top: 50%;
         -webkit-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
-        max-width: 500px
+        max-width: 750px
     }
     
     form {
-        width: 100%;
+        width: 65%;
         margin: 0 0 48px;
     }
     
@@ -70,10 +70,10 @@
 
 <body>
     <div class='central'>
-        <h1>Make your Snapshop</h1>
+        <h1>Make your Snapshot</h1>
         <form method="POST" class="nft-form">
-            <span>Block Number</span><br>
-            <input type='number' nome='blockLimit' id='blockLimit' class='blockLimit' placeholder='123456'><br>
+            <span>Block Number to set limit time</span><br>
+            <input type='number' name='blockLimit' id='blockLimit' class='blockLimit' placeholder='123456'><br>
             <br>
             <span>Collection or key</span><br>
             <input class="nftId" type="text" name="nftId" id="nftId" placeholder='ID-Collection or key'>
@@ -92,7 +92,7 @@
             <i>ID-NFT, address, first sale price, block, timestamp</i><br>
             To use it add your key like the Collection ID:<br>
             <i>e.g: 0a8ce195286c168f19-DONKEY or e0b9bdcc456a36497a-RMRKBNNRS</i><br>
-            You can pass a specific Block, this will be used as a time limit, you will see all sales before to that date
+            If you can pass a specific Block, this will be used as a time limit, you will see all sales before to that date
         </p>
     </div>
     <script>
