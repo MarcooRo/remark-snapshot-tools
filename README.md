@@ -7,7 +7,8 @@ Run <code>npm i</code> and <code>node main.js</code>
 
 # How to use
 Open <code>localhost:3000</code><br>
-Add you Collection ID<br>
+If you want to set a limit time you can add a block number or leave it empty to take the actual situation<br>
+Add Collection ID or a key<br>
 Make Snap!
 
 # What does it do
@@ -16,12 +17,6 @@ The Excel file contains this information extracted from the dump: NFT-ID, addres
 The file download will start automatically.<br>
 For the consolidation dump look <a href='https://docs.rmrk.app/syncing#consolidation' target='_blank'>here</a>
 For all Remark specs look <a href='https://github.com/rmrk-team/rmrk-spec' target='_blank'>here</a>
-
-# Commands in make file
-1) <code>make rebuildAll</code> Download the most updated dump<br>
-2) <code>make produceXml</code>
-3) On terminal will ask you to add the KEY to use to looking inside the dump. Like: ID-Collection '0a8ce195286c168f19-DONKEY'
-4) <code>make deleteAll</code> if you want delete all last file
 
 # What we could do in the future
 We would like to improve this tools, we plan to do these things in the near future:
