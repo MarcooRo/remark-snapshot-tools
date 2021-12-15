@@ -17,8 +17,9 @@ function requestDb(req, body, res) {
         .then(async response => {
             let jsonObj = JSON.parse(JSON.stringify(response.data));
             let userInput = body.nftId;
+            let userInputBlock = body.blockLimit //se passo un blocco funziona 10466699;
             if (typeof userInput != undefined && userInput != "") {
-                await saveFile(userInput, jsonObj);
+                await saveFile(userInputBlock, userInput, jsonObj);
                 var query = url.parse(req.url, true).query;
                 fs.readFile(`./excellDocuments/Remark-snapshot-wallet_${userInput}.xlsx`, function(err, content) {
                     if (err) {
@@ -70,7 +71,7 @@ server.listen(port, function(error) {
 })
 
 
-async function saveFile(collectionId, jsonObj) {
+async function saveFile(userInputBlock, collectionId, jsonObj) {
     const provider = new WsProvider.WsProvider('wss://kusama-rpc.polkadot.io/');
     const api = await ApiPromise.create({ provider });
     var sheet_1_data = [{ NFT_ID: 0, OWNER_ID: 0, PRICE: 0, BLOCK: 0, DATA: 0 }];
@@ -119,17 +120,19 @@ async function saveFile(collectionId, jsonObj) {
                 console.log('block: ' + block);
                 console.log('-----------------------');
             }
-
-            price = (price / 1000000000000) / 0.95
-            price = Number(price)
-            price = price.toFixed(2)
-            price = Number(price)
-            if (isNaN(price)) price = 0;
-            const blockHash = await api.rpc.chain.getBlockHash(block);
-            const signedBlock = await api.rpc.chain.getBlock(blockHash);
-            var date = signedBlock.block.extrinsics[0].args[0].toString();
-            var d = new Date(Math.floor(date)); // The 0 there is the key, which sets the date to the epoch
-            sheet_1_data.push({ NFT_ID: i, OWNER_ID: jsonObj.nfts[`${i}`].owner, PRICE: price, BLOCK: block, DATA: d.toLocaleString() });
+            console.log('userInputBlock: '+userInputBlock);
+            if(userInputBlock >= block){
+                price = (price / 1000000000000) / 0.95
+                price = Number(price)
+                price = price.toFixed(2)
+                price = Number(price)
+                if (isNaN(price)) price = 0;
+                const blockHash = await api.rpc.chain.getBlockHash(block);
+                const signedBlock = await api.rpc.chain.getBlock(blockHash);
+                var date = signedBlock.block.extrinsics[0].args[0].toString();
+                var d = new Date(Math.floor(date)); // The 0 there is the key, which sets the date to the epoch
+                sheet_1_data.push({ NFT_ID: i, OWNER_ID: jsonObj.nfts[`${i}`].owner, PRICE: price, BLOCK: block, DATA: d.toLocaleString() });
+            }
         }
     }
     var opts = [{ sheetid: 'NFT_ID', header: true }, { sheetid: 'OWNER_ID', header: false }, { sheetid: 'PRICE', header: false }, { sheetid: 'BLOCK', header: false }, { sheetid: 'DATA', header: false }];

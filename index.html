@@ -38,22 +38,29 @@
     
     .nftId {
         width: 75%;
-        height: 40px;
+        height: 35px;
         padding: 0.25rem 0.5rem;
     }
-    
+    .blockLimit{
+        height: 35px;
+        padding: 0.25rem 0.5rem;
+    }
     .snap {
         width: 20%;
-        height: 40px;
+        height: 35px;
         cursor: pointer;
     }
-    
     p {
         color: #f8f8f8;
         font-family: 'arial', sans-serif;
-        font-size: 18px;
+        font-size: 17px;
         font-weight: 500;
         line-height: 32px;
+    }
+    span{
+        color: #f8f8f8;
+        font-family: 'arial', sans-serif;
+        line-height: 22px;
     }
     
     #waitDiv {
@@ -65,6 +72,10 @@
     <div class='central'>
         <h1>Make your Snapshop</h1>
         <form method="POST" class="nft-form">
+            <span>Block Number</span><br>
+            <input type='number' nome='blockLimit' id='blockLimit' class='blockLimit' placeholder='123456'><br>
+            <br>
+            <span>Collection or key</span><br>
             <input class="nftId" type="text" name="nftId" id="nftId" placeholder='ID-Collection or key'>
             <button onclick="waitDiv()" class="snap" type="submit">Snap!</button>
             <div id="waitDiv">
@@ -78,11 +89,10 @@
         </form>
         <p>
             This tool uses the latest singular dump to get these data:<br>
-            <i>ID-NFT, address, first sale price, block, timestamp</i>
-        </p>
-        <p>
+            <i>ID-NFT, address, first sale price, block, timestamp</i><br>
             To use it add your key like the Collection ID:<br>
-            <i>e.g: 0a8ce195286c168f19-DONKEY or e0b9bdcc456a36497a-RMRKBNNRS</i>
+            <i>e.g: 0a8ce195286c168f19-DONKEY or e0b9bdcc456a36497a-RMRKBNNRS</i><br>
+            You can pass a specific Block, this will be used as a time limit, you will see all sales before to that date
         </p>
     </div>
     <script>
