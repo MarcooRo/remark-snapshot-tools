@@ -2,7 +2,7 @@
 A tools that takes the latest Singular consolidation dump and, associating whit a search key, extracts all the addresses and info that contain the NFT kay
 
 # Installation
-Needs: <a href='https://nodejs.org/it/' target='_blank'>node +16v</a> and <a hfre='https://www.npmjs.com/' target='_blank'>npm +6</a></br>
+Needs: <a href='https://nodejs.org/it/' target='_blank'>node +16v</a> and <a href='https://www.npmjs.com/' target='_blank'>npm +6</a></br>
 Run <code>npm i</code> and <code>node main.js</code>
 
 # How to use
